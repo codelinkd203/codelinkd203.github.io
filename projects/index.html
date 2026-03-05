@@ -148,6 +148,20 @@ color:var(--muted);
 font-size:12px;
 }
 
+.backArrow{
+  width:32px;
+  height:32px;
+  color:#9ca3af;
+  cursor:pointer;
+  margin-bottom:18px;
+  transition:.2s;
+}
+
+.backArrow:hover{
+  color:#e5e7eb;
+  transform:translateX(-3px);
+}
+
 </style>
 
 </head>
@@ -156,6 +170,11 @@ font-size:12px;
 <div class="container">
 
 <div class="header">
+  
+<svg class="backArrow" onclick="history.back()" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>
+
 <h1>Projects</h1>
 <div class="subtitle">gallery of experiments</div>
 </div>
