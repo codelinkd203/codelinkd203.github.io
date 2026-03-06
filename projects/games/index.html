@@ -190,33 +190,56 @@ loaded from /projects/games/games.json
 
 <script>
 
-async function loadProjects(){
+async function loadProjects() {
 
-const gallery=document.getElementById("gallery")
+const gallery = document.getElementById("gallery")
 
-const res=await fetch("/projects/games/games.json")
-const projects=await res.json()
+const res = await fetch("/projects/games/games.json")
+const projects = await res.json()
 
-projects.forEach(p=>{
+projects.forEach(p => {
 
-const card=document.createElement("a")
-card.className="card"
-card.href=p.link
+  // remove index.html if it exists
+  let cleanPath = p.gameIndex.replace("index.html", "")
+  
+  // ensure it starts inside the games folder
+  let link = `/projects/games/${cleanPath}`
 
-card.innerHTML=`
+  const card = document.createElement("a")
+  card.className = "card"
+  card.href = link
 
-<div class="image">
-<img src="${p.image}" alt="${p.name}">
-</div>
+  const imagePath = `/assets/cover/${p.gameName}.png`
 
-<div class="content">
-<div class="title">${p.name}</div>
-<div class="desc">${p.desc}</div>
-</div>
+  card.innerHTML = `
+  <div class="image" style="position:relative;">
+    <img src="${imagePath}" alt="${p.gameName}">
 
-`
+    ${p.popular ? `
+      <div style="
+        position:absolute;
+        bottom:8px;
+        right:8px;
+        background:#ff3b30;
+        border-radius:50%;
+        width:26px;
+        height:26px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:14px;
+      ">
+        🔥
+      </div>
+    ` : ""}
+  </div>
 
-gallery.appendChild(card)
+  <div class="content">
+    <div class="title">${p.gameName}</div>
+  </div>
+  `
+
+  gallery.appendChild(card)
 
 })
 
@@ -225,6 +248,5 @@ gallery.appendChild(card)
 loadProjects()
 
 </script>
-
 </body>
 </html>
