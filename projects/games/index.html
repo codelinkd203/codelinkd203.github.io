@@ -201,15 +201,20 @@ projects.forEach(p => {
 
   // remove index.html if it exists
   let cleanPath = p.gameIndex.replace("index.html", "")
-  
-  // ensure it starts inside the games folder
+
+  // extract folder name from path
+  // e.g. games/motox3m/ → motox3m
+  let folderName = cleanPath.split("/").filter(Boolean).pop()
+
+  // build final url
   let link = `/projects/games/${cleanPath}`
+
+  // image now uses folder name + .webp
+  let imagePath = `/assets/cover/${folderName}.webp`
 
   const card = document.createElement("a")
   card.className = "card"
   card.href = link
-
-  const imagePath = `/assets/cover/${p.gameName}.webp`
 
   card.innerHTML = `
   <div class="image" style="position:relative;">
@@ -247,6 +252,5 @@ projects.forEach(p => {
 
 loadProjects()
 
-</script>
-</body>
+</script></body>
 </html>
