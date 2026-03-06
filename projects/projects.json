@@ -4,5 +4,11 @@
     "desc": "All of the webapps I have coded, ranging from Base44 to plain code on my repo.",
     "image": "/assets/webapp.png",
     "link": "/projects/webapps/"
+  },
+  {
+    "name": "Games Gallery",
+    "desc": "100+ games to play when you are bored. Enjoy!",
+    "image": "/assets/games.png",
+    "link": "/projects/games/"
   }
 ]
