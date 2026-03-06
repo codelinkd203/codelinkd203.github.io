@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+<title>codelinkd203 - Webapps</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+--bg:#0a0a0b;
+--card:#111113;
+--border:#1f1f23;
+--text:#f4f4f5;
+--muted:#a1a1aa;
+}
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+body{
+font-family:Geist,system-ui;
+background:var(--bg);
+color:var(--text);
+padding:60px 24px;
+}
+
+/* grid background */
+
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background-image:
+linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+background-size:42px 42px;
+z-index:-1;
+}
+
+/* container */
+
+.container{
+max-width:1200px;
+margin:auto;
+}
+
+/* header */
+
+.header{
+margin-bottom:40px;
+}
+
+.header h1{
+font-size:38px;
+letter-spacing:-.5px;
+}
+
+.subtitle{
+margin-top:6px;
+color:var(--muted);
+font-family:"Geist Mono";
+font-size:13px;
+}
+
+/* gallery */
+
+.gallery{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+gap:26px;
+}
+
+/* links reset */
+
+a{
+text-decoration:none;
+color:inherit;
+}
+
+/* card */
+
+.card{
+background:var(--card);
+border:1px solid var(--border);
+border-radius:18px;
+overflow:hidden;
+transition:.25s ease;
+}
+
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 18px 50px rgba(0,0,0,.6);
+}
+
+/* image */
+
+.image{
+height:180px;
+overflow:hidden;
+}
+
+.image img{
+width:100%;
+height:100%;
+object-fit:cover;
+transition:transform .35s ease;
+}
+
+.card:hover img{
+transform:scale(1.08);
+}
+
+/* content */
+
+.content{
+padding:18px;
+}
+
+.title{
+font-size:18px;
+font-weight:500;
+margin-bottom:6px;
+}
+
+.desc{
+font-size:13px;
+font-family: "Geist Mono", sans-serif;
+color:var(--muted);
+line-height:1.5;
+}
+
+footer{
+margin-top:60px;
+text-align:center;
+font-family:"Geist Mono";
+color:var(--muted);
+font-size:12px;
+}
+
+.backArrow{
+  width:32px;
+  height:32px;
+  color:#9ca3af;
+  cursor:pointer;
+  margin-bottom:18px;
+  transition: opacity 0.3s ease-in-out;
+}
+  
+.backArrow:hover {
+  opacity: 0.2;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="header">
+  
+<svg class="backArrow" onclick="history.back()" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>
+
+<h1>Projects</h1>
+<div class="subtitle">gallery of experiments</div>
+</div>
+
+<div class="gallery" id="gallery"></div>
+
+<footer>
+loaded from /projects/projects.json
+</footer>
+
+</div>
+
+<script>
+
+async function loadProjects(){
+
+const gallery=document.getElementById("gallery")
+
+const res=await fetch("/projects/webapps/webapps.json")
+const projects=await res.json()
+
+projects.forEach(p=>{
+
+const card=document.createElement("a")
+card.className="card"
+card.href=p.link
+
+card.innerHTML=`
+
+<div class="image">
+<img src="${p.image}" alt="${p.name}">
+</div>
+
+<div class="content">
+<div class="title">${p.name}</div>
+<div class="desc">${p.desc}</div>
+</div>
+
+`
+
+gallery.appendChild(card)
+
+})
+
+}
+
+loadProjects()
+
+</script>
+
+</body>
+</html>
