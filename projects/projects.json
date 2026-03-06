@@ -1,8 +1,8 @@
 [
   {
-    "name": "Crasher",
-    "desc": "Crash your mobile device single-handedly without any bugs. Great for pranks, testing, and more. Use responsibly.",
-    "image": "/assets/crasher.png",
-    "link": "/projects/crasher/"
+    "name": "Webapps",
+    "desc": "All of the webapps I have coded, ranging from Base44 to plain code on my repo.",
+    "image": "/assets/webapps.png",
+    "link": "/projects/webapps/"
   }
 ]
