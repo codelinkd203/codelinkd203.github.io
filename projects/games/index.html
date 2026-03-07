@@ -190,30 +190,42 @@ loaded from /projects/games/games.json
 
 <script>
 
-async function loadProjects() {
+async function loadProjects(){
 
 const gallery = document.getElementById("gallery")
-
-try {
 
 const res = await fetch("/projects/games/games.json")
 const projects = await res.json()
 
 projects.forEach(p => {
 
-  // normalize path
-  let path = p.gameIndex || ""
+  let link = ""
+  let folder = ""
 
-  // remove leading "games/"
-  path = path.replace(/^games\//, "")
+  // ROM launcher games (Pokemon etc)
+  if(p.romName){
 
-  // get folder name (first directory)
-  let folder = path.split("/")[0]
+    link = `/projects/games/${p.gameIndex}#${p.romName}`
+    folder = p.romName
 
-  // build correct url
-  let link = `/projects/games/${folder}/`
+  }
 
-  // cover image
+  // normal folder games like "games/motox3m/"
+  else if(p.gameIndex.endsWith("/")){
+
+    folder = p.gameIndex.replace("games/","").replace("/","")
+    link = `/projects/${p.gameIndex}`
+
+  }
+
+  // games with html inside folder (ex: infinitemariobros/main.html)
+  else if(p.gameIndex.includes("/")){
+
+    folder = p.gameIndex.split("/")[1]
+    link = `/projects/games/${folder}/`
+
+  }
+
   let imagePath = `/assets/cover/${folder}.webp`
 
   const card = document.createElement("a")
@@ -229,50 +241,30 @@ projects.forEach(p => {
     >
 
     ${p.popular ? `
-      <div style="
-        position:absolute;
-        bottom:8px;
-        right:8px;
-        background:#ff3b30;
-        border-radius:50%;
-        width:26px;
-        height:26px;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        font-size:14px;
-      ">
-        🔥
-      </div>
+    <div style="
+      position:absolute;
+      bottom:8px;
+      right:8px;
+      background:#ff3b30;
+      border-radius:50%;
+      width:26px;
+      height:26px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:14px;
+    ">🔥</div>
     ` : ""}
   </div>
 
   <div class="content">
     <div class="title">${p.gameName}</div>
-    ${p.description ? `<div class="desc">${p.description}</div>` : ""}
   </div>
   `
 
   gallery.appendChild(card)
 
 })
-
-} catch (err) {
-
-console.error("Failed to load games.json", err)
-
-document.getElementById("gallery").innerHTML = `
-<div style="
-grid-column:1/-1;
-text-align:center;
-color:#a1a1aa;
-font-family:'Geist Mono';
-">
-Failed to load games.
-</div>
-`
-
-}
 
 }
 
