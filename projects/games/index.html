@@ -258,8 +258,9 @@ projects.forEach(p => {
   </div>
 
   <div class="content">
-    <div class="title">${p.gameName}</div>
-  </div>
+  <div class="title">${p.gameName}</div>
+  ${p.desc ? `<div class="desc">${p.desc}</div>` : ""}
+</div>
   `
 
   gallery.appendChild(card)
