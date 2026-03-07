@@ -194,23 +194,27 @@ async function loadProjects() {
 
 const gallery = document.getElementById("gallery")
 
+try {
+
 const res = await fetch("/projects/games/games.json")
 const projects = await res.json()
 
 projects.forEach(p => {
 
-  // remove index.html if it exists
-  let cleanPath = p.gameIndex.replace("index.html", "")
+  // normalize path
+  let path = p.gameIndex || ""
 
-  // extract folder name from path
-  // e.g. games/motox3m/ → motox3m
-  let folderName = cleanPath.split("/").filter(Boolean).pop()
+  // remove leading "games/"
+  path = path.replace(/^games\//, "")
 
-  // build final url
-  let link = `/projects/games/${cleanPath}`
+  // get folder name (first directory)
+  let folder = path.split("/")[0]
 
-  // image now uses folder name + .webp
-  let imagePath = `/assets/cover/${folderName}.webp`
+  // build correct url
+  let link = `/projects/games/${folder}/`
+
+  // cover image
+  let imagePath = `/assets/cover/${folder}.webp`
 
   const card = document.createElement("a")
   card.className = "card"
@@ -218,7 +222,11 @@ projects.forEach(p => {
 
   card.innerHTML = `
   <div class="image" style="position:relative;">
-    <img src="${imagePath}" alt="${p.gameName}">
+    <img 
+      src="${imagePath}" 
+      alt="${p.gameName}"
+      onerror="this.src='/assets/cover/placeholder.webp'"
+    >
 
     ${p.popular ? `
       <div style="
@@ -241,6 +249,7 @@ projects.forEach(p => {
 
   <div class="content">
     <div class="title">${p.gameName}</div>
+    ${p.description ? `<div class="desc">${p.description}</div>` : ""}
   </div>
   `
 
@@ -248,9 +257,27 @@ projects.forEach(p => {
 
 })
 
+} catch (err) {
+
+console.error("Failed to load games.json", err)
+
+document.getElementById("gallery").innerHTML = `
+<div style="
+grid-column:1/-1;
+text-align:center;
+color:#a1a1aa;
+font-family:'Geist Mono';
+">
+Failed to load games.
+</div>
+`
+
+}
+
 }
 
 loadProjects()
 
-</script></body>
+</script>
+</body>
 </html>
